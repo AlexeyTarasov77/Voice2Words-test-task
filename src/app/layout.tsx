@@ -11,7 +11,7 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 import Link from "next/link";
-import { ThemeProvider, useTheme } from "@/features/themes/ui/theme-provider";
+import { ThemeProvider } from "@/features/themes/ui/theme-provider";
 import { ToggleThemeBtn } from "@/features/themes/ui/toggle-btn";
 
 const geistSans = Geist({
