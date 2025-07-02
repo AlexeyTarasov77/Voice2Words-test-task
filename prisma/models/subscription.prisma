@@ -2,7 +2,7 @@
 model Subscription {
   id String @id @default(cuid())
   name String
-  maxRecords String
+  maxRecords Int
   price Float
   features String[]
 }
