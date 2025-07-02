@@ -9,7 +9,7 @@ import {
   SignedIn,
   SignedOut,
   UserButton,
-} from '@clerk/nextjs'
+} from "@clerk/nextjs";
 import Link from "next/link";
 import { ThemeProvider, useTheme } from "@/features/themes/ui/theme-provider";
 import { ToggleThemeBtn } from "@/features/themes/ui/toggle-btn";
@@ -37,12 +37,16 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
           <ThemeProvider>
             <header className="flex justify-between border-b border-b-zinc-400 items-center p-4 h-16 dark:text-zinc-300 dark:bg-black">
               <div className="flex items-center gap-4">
                 <WholeWord />
-                <h2 className="text-lg font-bold leading-tight tracking-[-0.015em]">Voice2Words</h2>
+                <h2 className="text-lg font-bold leading-tight tracking-[-0.015em]">
+                  Voice2Words
+                </h2>
               </div>
               <div className="gap-4 flex">
                 <Link href="/pricing">Pricing</Link>
