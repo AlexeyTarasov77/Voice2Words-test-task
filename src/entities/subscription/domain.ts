@@ -1,5 +1,5 @@
 export type SubscriptionEntity = {
-  id: number;
+  id: string;
   name: string;
   maxRecords: number;
   price: number;
