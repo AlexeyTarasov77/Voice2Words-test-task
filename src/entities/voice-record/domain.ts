@@ -1,9 +1,9 @@
 
-export type VoiceRecord = {
+export type VoiceRecordEntity = {
   id: string;
   userId: string;
   filename: string;
-  text?: string
+  text: string | null
   voice: Blob;
   createdAt: Date
   updatedAt: Date

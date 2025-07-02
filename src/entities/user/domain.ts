@@ -1,6 +1,6 @@
 import { PublicUserData } from "@clerk/types";
-import { Subscription } from "../subscription/domain"
+import { SubscriptionEntity } from "../subscription/domain"
 
-export type User = {
-  subscription: Subscription;
+export type UserEntity = {
+  subscription: SubscriptionEntity;
 } & PublicUserData
