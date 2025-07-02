@@ -2,6 +2,9 @@
   "name": "voice-to-text",
   "version": "0.1.0",
   "private": true,
+  "prisma": {
+    "schema": "./prisma"
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
@@ -9,6 +12,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.23.2",
     "@radix-ui/react-slot": "^1.2.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

@@ -1,0 +1,9 @@
+enum SubscriptionType {
+  FREE,
+  PAID
+}
+
+model User {
+  id String @id @default(cuid())
+  subscriptionType SubscriptionType @default(FREE)
+}
