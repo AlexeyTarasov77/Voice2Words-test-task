@@ -1,17 +1,12 @@
-export type Subscription = {
+export type SubscriptionEntity = {
+  id: number;
   name: string;
   maxRecords: number;
-  total: number;
+  price: number;
+  features: string[]
 };
 
-export const FreeSubscription: Subscription = {
-  name: "Free",
-  maxRecords: 2,
-  total: 0,
-};
+export const checkCanCreateRecord = (sub: SubscriptionEntity, currRecordsCount: number): boolean => {
+  return sub.maxRecords == -1 || currRecordsCount + 1 <= sub.maxRecords
+}
 
-export const PaidSubscription: Subscription = {
-  name: "Paid",
-  maxRecords: -1,
-  total: 19.99,
-};
