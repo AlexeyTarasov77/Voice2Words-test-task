@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { WholeWord, CloudMoon } from "lucide-react";
 import "./globals.css";
 import {
   ClerkProvider,
@@ -9,6 +10,9 @@ import {
   SignedOut,
   UserButton,
 } from '@clerk/nextjs'
+import Link from "next/link";
+import { ThemeProvider, useTheme } from "@/features/themes/ui/theme-provider";
+import { ToggleThemeBtn } from "@/features/themes/ui/toggle-btn";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,20 +38,31 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-          <header className="flex justify-end items-center p-4 gap-4 h-16">
-            <SignedOut>
-              <SignInButton />
-              <SignUpButton>
-                <button className="bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
-                  Sign Up
-                </button>
-              </SignUpButton>
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-          </header>
-          {children}
+          <ThemeProvider>
+            <header className="flex justify-between border-b border-b-zinc-400 items-center p-4 h-16 dark:text-zinc-300 dark:bg-black">
+              <div className="flex items-center gap-4">
+                <WholeWord />
+                <h2 className="text-lg font-bold leading-tight tracking-[-0.015em]">Voice2Words</h2>
+              </div>
+              <div className="gap-4 flex">
+                <Link href="/pricing">Pricing</Link>
+                <SignedOut>
+                  <SignInButton />
+                  <SignUpButton>
+                    <button className="bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
+                      Sign Up
+                    </button>
+                  </SignUpButton>
+                </SignedOut>
+                <SignedIn>
+                  <Link href="/dashboard">Dashboard</Link>
+                  <ToggleThemeBtn />
+                  <UserButton />
+                </SignedIn>
+              </div>
+            </header>
+            {children}
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>
