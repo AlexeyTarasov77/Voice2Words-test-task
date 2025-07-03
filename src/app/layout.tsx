@@ -40,14 +40,14 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <ThemeProvider>
+          <div className="flex flex-col grow min-h-screen"><ThemeProvider>
             <header className="flex justify-between border-b border-b-zinc-400 items-center p-4 h-16 dark:text-zinc-300 dark:bg-black">
-              <div className="flex items-center gap-4">
+              <Link href="/" className="flex items-center gap-4">
                 <WholeWord />
                 <h2 className="text-lg font-bold leading-tight tracking-[-0.015em]">
                   Voice2Words
                 </h2>
-              </div>
+              </Link>
               <div className="gap-4 flex">
                 <Link href="/pricing">Pricing</Link>
                 <SignedOut>
@@ -66,7 +66,19 @@ export default function RootLayout({
               </div>
             </header>
             {children}
-          </ThemeProvider>
+          </ThemeProvider></div>
+          <footer className="flex justify-center">
+            <div className="flex max-w-[960px] flex-1 flex-col">
+              <footer className="flex flex-col gap-6 px-5 py-10 text-center @container">
+                <div className="flex flex-wrap items-center justify-center gap-6 @[480px]:flex-row @[480px]:justify-around">
+                  <a className="text-neutral-500 text-base font-normal leading-normal min-w-40" href="#">Terms of Service</a>
+                  <a className="text-neutral-500 text-base font-normal leading-normal min-w-40" href="#">Privacy Policy</a>
+                  <a className="text-neutral-500 text-base font-normal leading-normal min-w-40" href="#">Contact Us</a>
+                </div>
+                <p className="text-neutral-500 text-base font-normal leading-normal">2025 Voice2Words. All rights reserved.</p>
+              </footer>
+            </div>
+          </footer>
         </body>
       </html>
     </ClerkProvider>

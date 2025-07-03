@@ -1,5 +1,5 @@
 "use client"
-import { createContext, PropsWithChildren, use, useState } from "react";
+import { createContext, PropsWithChildren, use, useEffect, useState } from "react";
 
 type ThemeName = "dark" | "light"
 
@@ -18,11 +18,10 @@ export const useTheme = () => {
 
 export function ThemeProvider({ children, defaultTheme }: PropsWithChildren & { defaultTheme?: ThemeName }) {
   const [currTheme, setTheme] = useState<ThemeName>(defaultTheme || "dark")
+  useEffect(() => currTheme == "dark" ? document.body.classList.add("dark") : document.body.classList.remove("dark"), [currTheme])
   return (
     <ThemeCtx.Provider value={{ currTheme, setTheme }}>
-      <div className={currTheme == "dark" ? "dark" : ""}>
-        {children}
-      </div>
+      {children}
     </ThemeCtx.Provider>
   )
 }

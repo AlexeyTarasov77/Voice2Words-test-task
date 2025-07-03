@@ -5,7 +5,7 @@ import { capitalize } from "@/shared/utils/text";
 
 export function SubscriptionCard({ features, isCurrent, price, name, onUpgrade }: { features: string[], isCurrent: boolean, price: number, name: string, onUpgrade: () => void }) {
   return (
-    <Card>
+    <Card className="min-w-1/3">
       <CardHeader>
         <CardTitle>{capitalize(name)}</CardTitle>
         <CardTitle className="text-2xl font-bold">${Math.round(price * 100) / 100}</CardTitle>
