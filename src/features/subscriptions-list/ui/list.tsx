@@ -9,9 +9,7 @@ export function SubscriptionsList() {
   const { isAuthenticated } = use(auth())
   let currentSubscription = null
   if (isAuthenticated) {
-    const sub = use(subscriptionsService.getCurrentSub())
-    if (!sub) throw new Error("Current user's subscription does not exist")
-    currentSubscription = sub
+    currentSubscription = use(subscriptionsService.getCurrentSub())
   }
   return (
     <div className="grid grid-cols-2 gap-10">

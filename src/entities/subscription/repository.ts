@@ -1,4 +1,4 @@
-import { Prisma, Subscription } from "@/generated/prisma";
+import { Prisma, Subscription, SubscriptionLevel } from "@/generated/prisma";
 import { SubscriptionEntity, SubscriptionLevelEntity } from "./domain";
 import { prisma } from "@/shared/lib/db";
 
@@ -13,7 +13,9 @@ export const subscriptionsRepo = {
     return subscriptions.map(mapToEntity)
   },
   getSubscription: async (where: Prisma.SubscriptionWhereInput & { level?: SubscriptionLevelEntity }): Promise<SubscriptionEntity | null> => {
-    console.log("WHERE", where)
+    if (where.level !== undefined) {
+      where.level = SubscriptionLevelEntity[where.level] as any
+    }
     const subscription = await prisma.subscription.findFirst({ where })
     return subscription ? mapToEntity(subscription) : null
   }

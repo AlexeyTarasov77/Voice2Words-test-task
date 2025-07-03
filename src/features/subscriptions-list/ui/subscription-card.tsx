@@ -1,15 +1,17 @@
 import { Button } from "@/shared/ui/button";
 import { Check } from "lucide-react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/shared/ui/card";
-import { capitalize } from "@/shared/utils/text";
 import { UpgradeBtn } from "./upgrade-btn";
 import { getSubscriptionName, SubscriptionEntity, SubscriptionLevelEntity } from "@/entities/subscription/domain";
 
 
 
 export function SubscriptionCard({ subscription, currentLevel }: { currentLevel?: SubscriptionLevelEntity, subscription: SubscriptionEntity }) {
-  const renderAction = () => {
-    if (currentLevel == SubscriptionLevelEntity.FREE || subscription.level == SubscriptionLevelEntity.FREE) {
+  const renderFooterButton = () => {
+    if (currentLevel == subscription.level) {
+      return <Button disabled={true}>Current plan</Button>
+    }
+    if (subscription.level == SubscriptionLevelEntity.FREE) {
       return <Button disabled={true}>Default</Button>
     }
     if (!currentLevel || subscription.level > currentLevel) {
@@ -18,7 +20,6 @@ export function SubscriptionCard({ subscription, currentLevel }: { currentLevel?
     if (subscription.level < currentLevel) {
       return <Button disabled={true}>Downgrade</Button>
     }
-    return <Button disabled={true}>Current plan</Button>
   }
   return (
     <Card className="min-w-80 min-h-96">
@@ -35,7 +36,7 @@ export function SubscriptionCard({ subscription, currentLevel }: { currentLevel?
         ))}
       </CardContent>
       <CardFooter>
-        {renderAction()}
+        {renderFooterButton()}
       </CardFooter>
     </Card>
   )

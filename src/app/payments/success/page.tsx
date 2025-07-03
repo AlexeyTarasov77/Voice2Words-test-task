@@ -7,6 +7,7 @@ export default function Page() {
         <CheckLine className="w-1/2 h-1/2" />
       </div>
       <h3 className="text-2xl font-bold mt-5">Thank you for your payment!</h3>
+      <h4 className="text-lg text-zinc-500">Changes will take effect in up to 1 minute</h4>
     </div>
   )
 }
