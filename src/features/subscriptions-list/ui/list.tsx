@@ -13,17 +13,13 @@ export function SubscriptionsList() {
     if (!sub) throw new Error("Current user's subscription does not exist")
     currentSubscription = sub
   }
-  const handleUpgrade = async (subId: string) => {
-
-  }
   return (
     <div className="grid grid-cols-2 gap-10">
       {subscriptions.map(sub => (
         <SubscriptionCard
           key={sub.id}
-          {...sub}
-          isCurrent={!!(currentSubscription && sub.id == currentSubscription.id)}
-          onUpgrade={() => handleUpgrade(sub.id)}
+          subscription={sub}
+          currentLevel={currentSubscription?.level}
         />
       ))}
     </div>

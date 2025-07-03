@@ -42,7 +42,7 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <div className="flex flex-col grow min-h-screen"><ThemeProvider>
-            <header className="flex justify-between border-b border-b-zinc-400 items-center p-4 h-16 dark:text-zinc-300 dark:bg-black">
+            <header className="fixed w-full flex justify-between border-b border-b-zinc-400 items-center p-4 h-16 dark:text-zinc-300 dark:bg-black">
               <Link href="/" className="flex items-center gap-4">
                 <WholeWord />
                 <h2 className="text-lg font-bold leading-tight tracking-[-0.015em]">
@@ -66,7 +66,9 @@ export default function RootLayout({
                 <ToggleThemeBtn />
               </div>
             </header>
-            {children}
+            <div className="mt-16 h-screen">
+              {children}
+            </div>
           </ThemeProvider></div>
           <footer className="flex justify-center">
             <div className="flex max-w-[960px] flex-1 flex-col">
