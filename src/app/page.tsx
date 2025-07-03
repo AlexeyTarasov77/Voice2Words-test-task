@@ -23,7 +23,7 @@ export default function Home() {
                 </h2>
               </div>
               <Button className="p-6 text-xl" asChild>
-                <Link href="/dashboard">Get  Started</Link>
+                <Link href="/dashboard" prefetch={false}>Get Started</Link>
               </Button>
             </div>
           </div>

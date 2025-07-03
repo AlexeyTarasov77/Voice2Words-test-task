@@ -5,13 +5,12 @@ import { capitalize } from "@/shared/utils/text";
 
 export function SubscriptionCard({ features, isCurrent, price, name, onUpgrade }: { features: string[], isCurrent: boolean, price: number, name: string, onUpgrade: () => void }) {
   return (
-    <Card className="min-w-1/3">
+    <Card className="min-w-80 min-h-96">
       <CardHeader>
         <CardTitle>{capitalize(name)}</CardTitle>
         <CardTitle className="text-2xl font-bold">${Math.round(price * 100) / 100}</CardTitle>
       </CardHeader>
       <CardContent className="flex-1">
-        <p>Card Content</p>
         {features.map(feature => (
           <div className="flex gap-2 items-center">
             <Check className="size-4" />

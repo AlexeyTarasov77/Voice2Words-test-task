@@ -13,6 +13,7 @@ import {
 import Link from "next/link";
 import { ThemeProvider } from "@/features/themes/ui/theme-provider";
 import { ToggleThemeBtn } from "@/features/themes/ui/toggle-btn";
+import { Button } from "@/shared/ui/button";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,21 +49,21 @@ export default function RootLayout({
                   Voice2Words
                 </h2>
               </Link>
-              <div className="gap-4 flex">
+              <div className="gap-4 flex items-center">
                 <Link href="/pricing">Pricing</Link>
                 <SignedOut>
                   <SignInButton />
                   <SignUpButton>
-                    <button className="bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
+                    <Button className="bg-[#6c47ff] text-white rounded-full font-medium">
                       Sign Up
-                    </button>
+                    </Button>
                   </SignUpButton>
                 </SignedOut>
                 <SignedIn>
                   <Link href="/dashboard">Dashboard</Link>
-                  <ToggleThemeBtn />
                   <UserButton />
                 </SignedIn>
+                <ToggleThemeBtn />
               </div>
             </header>
             {children}
