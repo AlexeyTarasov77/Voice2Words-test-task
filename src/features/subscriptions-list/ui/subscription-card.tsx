@@ -11,8 +11,8 @@ export function SubscriptionCard({ features, isCurrent, price, name, onUpgrade }
         <CardTitle className="text-2xl font-bold">${Math.round(price * 100) / 100}</CardTitle>
       </CardHeader>
       <CardContent className="flex-1">
-        {features.map(feature => (
-          <div className="flex gap-2 items-center">
+        {features.map((feature, i) => (
+          <div key={i} className="flex gap-2 items-center">
             <Check className="size-4" />
             <p>{feature}</p>
           </div>

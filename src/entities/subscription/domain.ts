@@ -1,6 +1,11 @@
+export enum SubscriptionLevelEntity {
+  FREE,
+  PREMIUM
+}
+
 export type SubscriptionEntity = {
   id: string;
-  name: string;
+  level: SubscriptionLevelEntity;
   maxRecords: number;
   price: number;
   features: string[]

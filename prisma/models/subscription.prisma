@@ -1,8 +1,12 @@
+enum SubscriptionLevel {
+  FREE
+  PREMIUM
+}
 
 model Subscription {
   id String @id @default(cuid())
-  name String
   maxRecords Int
+  level SubscriptionLevel @unique
   price Float
   features String[]
 }

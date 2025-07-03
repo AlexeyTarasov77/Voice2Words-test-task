@@ -1,9 +1,10 @@
+import { SubscriptionLevel } from "@/generated/prisma"
 import { prisma } from "@/shared/lib/db"
 
 async function main() {
   await prisma.subscription.create({
     data: {
-      name: "Free",
+      level: SubscriptionLevel.FREE,
       maxRecords: 2,
       features: ["Maximum 2 transcriptions", "Limited transcription time", "Standard accuracy"],
       price: 0.0
@@ -11,7 +12,7 @@ async function main() {
   })
   await prisma.subscription.create({
     data: {
-      name: "Premium",
+      level: SubscriptionLevel.PREMIUM,
       maxRecords: -1,
       features: ["Unlimited transcriptions", "Unlimited transcription time", "High accuracy", "Priority support"],
       price: 19.99

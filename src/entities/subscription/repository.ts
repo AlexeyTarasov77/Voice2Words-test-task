@@ -1,13 +1,19 @@
 import { Prisma, Subscription } from "@/generated/prisma";
-import { SubscriptionEntity } from "./domain";
+import { SubscriptionEntity, SubscriptionLevelEntity } from "./domain";
 import { prisma } from "@/shared/lib/db";
 
 
+const mapToEntity = (dbRecord: Subscription): SubscriptionEntity => {
+  return { ...dbRecord, level: SubscriptionLevelEntity[dbRecord.level] }
+}
+
 export const subscriptionsRepo = {
   listSubscriptions: async (where?: Prisma.SubscriptionWhereInput): Promise<SubscriptionEntity[]> => {
-    return await prisma.subscription.findMany({ where })
+    const subscriptions = await prisma.subscription.findMany({ where })
+    return subscriptions.map(mapToEntity)
   },
-  getSubscription: async (where: Prisma.SubscriptionWhereInput): Promise<SubscriptionEntity | null> => {
-    return await prisma.subscription.findFirst({ where })
+  getSubscription: async (where: Prisma.SubscriptionWhereInput & { level?: SubscriptionLevelEntity }): Promise<SubscriptionEntity | null> => {
+    const subscription = await prisma.subscription.findFirst({ where })
+    return subscription ? mapToEntity(subscription) : null
   }
 }
