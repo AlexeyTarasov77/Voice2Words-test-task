@@ -1,0 +1,2 @@
+export { LiveAudioVisualizer } from "./visualizer";
+
