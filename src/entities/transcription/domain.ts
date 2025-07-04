@@ -1,5 +1,5 @@
 
-export type VoiceRecordEntity = {
+export type TranscriptionEntity = {
   id: string;
   userId: string;
   filename: string;

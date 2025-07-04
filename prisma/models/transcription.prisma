@@ -1,5 +1,5 @@
 
-model VoiceRecord {
+model Transcription {
   id String @id @default(cuid())
   filename String
   voice Bytes
