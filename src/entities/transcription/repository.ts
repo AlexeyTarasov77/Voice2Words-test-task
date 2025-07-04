@@ -7,7 +7,7 @@ const mapToEntity = (dbRecord: Transcription): TranscriptionEntity => {
 }
 
 export const transcriptionsRepo = {
-  listRecords: async (where: Prisma.TranscriptionWhereInput): Promise<TranscriptionEntity[]> => {
+  listTranscriptions: async (where: Prisma.TranscriptionWhereInput): Promise<TranscriptionEntity[]> => {
     const records = await prisma.transcription.findMany({ where: where })
     return records.map(mapToEntity)
   }
