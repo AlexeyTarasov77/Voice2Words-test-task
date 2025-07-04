@@ -15,6 +15,7 @@ import { ThemeProvider } from "@/features/themes/ui/theme-provider";
 import { ToggleThemeBtn } from "@/features/themes/ui/toggle-btn";
 import { Button } from "@/shared/ui/button";
 import { SidebarInset, SidebarProvider } from "@/shared/ui/sidebar";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -102,6 +103,7 @@ export default function RootLayout({
               <Footer />
             </SidebarInset>
           </SidebarProvider>
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>

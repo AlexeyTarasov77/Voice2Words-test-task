@@ -36,14 +36,16 @@ export const AudioRecorder: (props: RecorderProps) => ReactElement = ({
 
   useEffect(() => {
     if (
-      (recorderControls) &&
       recordingBlob != null &&
       onRecordingComplete != null
     ) {
       onRecordingComplete(recordingBlob);
     }
   }, [recordingBlob]);
-
+  const handleSave = () => {
+    stopRecording()
+    onRecordingComplete && recordingBlob && onRecordingComplete(recordingBlob)
+  }
   return (
     <div
       className={cn(
@@ -54,7 +56,7 @@ export const AudioRecorder: (props: RecorderProps) => ReactElement = ({
     >
       <span
         className="cursor-pointer rounded-full"
-        onClick={isRecording ? stopRecording : startRecording}
+        onClick={isRecording ? handleSave : startRecording}
       >
         {isRecording ? <Save /> : <Mic />}
       </span>

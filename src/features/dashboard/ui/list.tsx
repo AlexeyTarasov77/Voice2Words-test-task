@@ -23,6 +23,8 @@ import { TranscriptionEntity } from '@/entities/transcription/domain'
 import { useState } from 'react'
 import { useFilteredData } from '@/shared/lib/react/search'
 import { Button } from '@/shared/ui/button'
+import { Dialog, DialogTrigger } from '@/shared/ui/dialog'
+import { NewRecordModal } from './new-record-modal'
 
 export function TranscriptionsSidebar() {
   const { data: transcriptions, error, isLoading } = useSWR<TranscriptionEntity[]>(`/api/transcriptions`, fetcher)
@@ -64,7 +66,12 @@ export function TranscriptionsSidebar() {
       </SidebarContent>
       <SidebarRail />
       <SidebarFooter>
-        <Button>New Record</Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button>New Record</Button>
+          </DialogTrigger>
+          <NewRecordModal />
+        </Dialog>
       </SidebarFooter>
     </Sidebar>
   )

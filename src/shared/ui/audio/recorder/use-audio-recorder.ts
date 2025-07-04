@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { RecorderControls } from "../types";
+import { RecorderControls } from "./types";
 
 /**
  * @returns Controls for the recording. Details of returned controls are given below
