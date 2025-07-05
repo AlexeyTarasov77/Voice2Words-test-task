@@ -95,7 +95,7 @@ export default function RootLayout({
               <div className="flex flex-col grow min-h-screen">
                 <ThemeProvider>
                   <Header />
-                  <div className="mt-16 h-screen">
+                  <div className="h-screen">
                     {children}
                   </div>
                 </ThemeProvider>

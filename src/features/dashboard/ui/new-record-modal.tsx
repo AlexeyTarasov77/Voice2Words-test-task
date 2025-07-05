@@ -9,24 +9,19 @@ import {
 } from "@/shared/ui/dialog"
 import { FileDropbox } from "@/shared/ui/dropbox";
 import { Trash } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { startTransition, useActionState, useState } from "react";
 import { toast } from "sonner";
+import { createVoiceRecordAction } from "../api/transcriptions";
 
 export function NewRecordModal() {
-  const [recordBlob, setRecordBlob] = useState<Blob | null>(null)
-  const fileInputRef = useRef<null | HTMLInputElement>(null)
-  useEffect(() => {
-    if (!fileInputRef.current?.files?.length) return
-    const file = fileInputRef.current!.files![0]
-    console.log(file.type)
-  }, [fileInputRef.current?.files])
-  const handleFileUpload = (f: File) => {
-    console.log(f.type)
+  const [voiceFile, setVoiceFile] = useState<File | null>(null)
+  const handleFileUpload = async (f: File) => {
     if (!f.type.startsWith("audio")) {
       return toast.error("Please select file with valid audio format!")
     }
-    setRecordBlob(f)
+    setVoiceFile(f)
   }
+  const [_, dispatch, isPending] = useActionState(async () => createVoiceRecordAction(await voiceFile!.arrayBuffer(), voiceFile!.name), null)
   return (
     <>
       <DialogContent>
@@ -44,7 +39,7 @@ export function NewRecordModal() {
           <div className="flex flex-col gap-3">
             <h3 className="text-xl font-bold">Record New</h3>
             <AudioRecorder
-              onRecordingComplete={(blob) => setRecordBlob(blob)}
+              onRecordingComplete={(blob) => setVoiceFile(new File([blob], "Record " + new Date().toLocaleString()))}
               showVisualizer={true}
               audioTrackConstraints={{
                 noiseSuppression: true,
@@ -53,17 +48,17 @@ export function NewRecordModal() {
             />
           </div>
         </div>
-        {recordBlob && (
+        {voiceFile && (
           <div className="flex justify-between items-center">
             <h5 className="text-lg">Selected record</h5>
             <div className="flex gap-2 items-center max-h-10">
-              <audio className="max-w-60 max-h-10" controls src={URL.createObjectURL(recordBlob)} />
-              <Button className="rounded-full" onClick={() => setRecordBlob(null)}><Trash /></Button>
+              <audio className="max-w-60 max-h-10" controls src={URL.createObjectURL(voiceFile)} />
+              <Button className="rounded-full" onClick={() => setVoiceFile(null)}><Trash /></Button>
             </div>
           </div>
         )}
         <DialogFooter>
-          <Button>Create record</Button>
+          <Button isLoading={isPending} onClick={() => voiceFile ? startTransition(dispatch) : toast.error("Select voice file to create record!")}>Create record</Button>
         </DialogFooter>
       </DialogContent>
     </>

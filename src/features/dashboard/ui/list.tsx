@@ -9,7 +9,6 @@ import {
   SidebarHeader,
   SidebarInput,
   SidebarMenu,
-  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSkeleton,
@@ -56,8 +55,8 @@ export function TranscriptionsSidebar() {
           {(isLoading ? Array(10) : filteredTranscriptions).map(t => (
             t ?
               <SidebarMenuItem key={t.id}>
-                <SidebarMenuButton asChild isActive={currentPath == `/dashboard/${t.id}`}>
-                  <Link href={`/dashboard/${t.id}`}>{t.filename}</Link>
+                <SidebarMenuButton isActive={currentPath == `/dashboard/${t.id}`}>
+                  <Link className="truncate text-ellipsis" href={`/dashboard/${t.id}`}>{t.filename}</Link>
                 </SidebarMenuButton>
               </SidebarMenuItem> :
               <SidebarMenuSkeleton />
