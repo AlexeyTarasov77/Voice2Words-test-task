@@ -7,6 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/shared/ui/dialog"
+import { FileDropbox } from "@/shared/ui/dropbox";
 import { Trash } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -38,16 +39,7 @@ export function NewRecordModal() {
         <div className="flex flex-col gap-5">
           <div className="flex flex-col gap-3">
             <h3 className="text-xl font-bold">Upload from device</h3>
-            <div className="px-6 py-14 border-neutral-400 border-dashed border-2 rounded-xl gap-6 flex flex-col justify-center items-center">
-              <div className="flex flex-col gap-2">
-                <h4 className="font-semibold text-xl">Drag and drop audio file here</h4>
-                <h4 className="text-lg text-secondary-foreground">Or browse files from your computer</h4>
-              </div>
-              <input type="file" ref={fileInputRef} className="hidden" accept="audio/*" onChange={(e) => e.target.files?.length && handleFileUpload(e.target.files[0])} />
-              <Button className="rounded-full" onClick={() => fileInputRef.current!.click()}>
-                Browse Files
-              </Button>
-            </div>
+            <FileDropbox accept="audio/*" handleFileUpload={handleFileUpload} />
           </div>
           <div className="flex flex-col gap-3">
             <h3 className="text-xl font-bold">Record New</h3>

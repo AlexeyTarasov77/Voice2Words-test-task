@@ -1,4 +1,4 @@
-import { useEffect, ReactElement } from "react";
+import { useEffect } from "react";
 
 import { RecorderProps } from "./types";
 import { useAudioRecorder } from "./use-audio-recorder";
@@ -6,7 +6,7 @@ import { LiveAudioVisualizer } from "../visualizer";
 import { cn } from "@/shared/lib/css";
 import { Mic, Pause, Save, Play, Trash } from "lucide-react";
 
-export const AudioRecorder: (props: RecorderProps) => ReactElement = ({
+export const AudioRecorder: React.FC<RecorderProps> = ({
   onRecordingComplete,
   onNotAllowedOrFound,
   recorderControls,
