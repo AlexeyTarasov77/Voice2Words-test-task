@@ -1,5 +1,5 @@
 "use client"
-import { createContext, PropsWithChildren, use, useEffect, useState } from "react";
+import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
 
 type ThemeName = "dark" | "light"
 
@@ -11,7 +11,7 @@ interface IThemeCtx {
 const ThemeCtx = createContext<IThemeCtx | null>(null)
 
 export const useTheme = () => {
-  const ctx = use(ThemeCtx)
+  const ctx = useContext(ThemeCtx)
   if (!ctx) throw new Error("Theme context not provided")
   return ctx
 }
