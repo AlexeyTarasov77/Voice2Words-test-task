@@ -11,6 +11,8 @@ export const createVoiceRecordAction = async (voiceFileData: BlobPart, voiceFile
   return redirect("/dashboard/" + transcription.id)
 }
 
-export const createTranscriptionAction = async (recordId: number) => {
-
+export const makeTranscriptionAction = async (recordId: string, voiceB64: string) => {
+  const voiceBuffer = Buffer.from(voiceB64, "base64")
+  const voiceBlob = new Blob([voiceBuffer], { type: "audio/webm" })
+  return await transcriptionService.makeTranscription(recordId, voiceBlob)
 }

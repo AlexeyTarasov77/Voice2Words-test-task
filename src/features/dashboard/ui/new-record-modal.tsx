@@ -17,7 +17,7 @@ export function NewRecordModal() {
   const [voiceFile, setVoiceFile] = useState<File | null>(null)
   const handleFileUpload = async (f: File) => {
     if (!f.type.startsWith("audio")) {
-      return toast.error("Please select file with valid audio format!")
+      return toast.error(`Please select file with valid audio format! ${f.type} is not supported`)
     }
     setVoiceFile(f)
   }
