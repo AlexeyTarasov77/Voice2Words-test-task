@@ -7,7 +7,5 @@ export async function GET(_: Request, { params }: { params: Promise<{ id: string
   if (!transcription) {
     return new Response(null, { status: 404 })
   }
-  const voiceBytes = await transcription.voice.arrayBuffer()
-  const voiceBase64 = Buffer.from(voiceBytes).toString("base64")
-  return Response.json({ ...transcription, voice: voiceBase64 })
+  return Response.json(transcription)
 }

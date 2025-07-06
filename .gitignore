@@ -37,6 +37,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# uploaded voice files
+public/voices
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

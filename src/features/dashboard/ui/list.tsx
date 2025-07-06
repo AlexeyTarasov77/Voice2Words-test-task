@@ -28,7 +28,7 @@ import { NewRecordModal } from './new-record-modal'
 export function TranscriptionsSidebar() {
   const { data: transcriptions, error, isLoading } = useSWR<TranscriptionEntity[]>(`/api/transcriptions`, fetcher)
   const [searchQuery, setSearchQuery] = useState("")
-  const filteredTranscriptions = useFilteredData(searchQuery, (t) => t.filename, transcriptions || [])
+  const filteredTranscriptions = useFilteredData(searchQuery, (t) => t.name, transcriptions || [])
   const currentPath = usePathname()
   return (
     <Sidebar>
@@ -52,11 +52,11 @@ export function TranscriptionsSidebar() {
       </SidebarHeader>
       <SidebarContent>
         <SidebarMenu>
-          {(isLoading ? Array(10) : filteredTranscriptions).map(t => (
+          {(isLoading ? Array(10) : filteredTranscriptions).map((t: TranscriptionEntity | undefined) => (
             t ?
               <SidebarMenuItem key={t.id}>
                 <SidebarMenuButton isActive={currentPath == `/dashboard/${t.id}`}>
-                  <Link className="truncate text-ellipsis" href={`/dashboard/${t.id}`}>{t.filename}</Link>
+                  <Link className="truncate text-ellipsis" href={`/dashboard/${t.id}`}>{t.name}</Link>
                 </SidebarMenuButton>
               </SidebarMenuItem> :
               <SidebarMenuSkeleton />

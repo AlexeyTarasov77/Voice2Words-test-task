@@ -2,17 +2,20 @@
 
 import { transcriptionService } from "@/entities/transcription/service"
 import { auth } from "@clerk/nextjs/server"
+import { headers } from "next/headers"
 import { redirect } from "next/navigation"
 
-export const createVoiceRecordAction = async (voiceFileData: BlobPart, voiceFileName: string) => {
-  const voiceFile = new File([voiceFileData], voiceFileName)
+export const createVoiceRecordAction = async (voiceFileData: BlobPart, voiceFilename: string, voiceFileType: string) => {
+  const voiceFile = new File([voiceFileData], voiceFilename, { type: voiceFileType })
   const { userId } = await auth.protect()
-  const transcription = await transcriptionService.createVoiceRecord(voiceFile, userId)
+  const headersList = await headers()
+  const origin = headersList.get('origin')
+  if (!origin) throw new Error("Invalid request without origin header")
+  const transcription = await transcriptionService.createVoiceRecord(voiceFile, origin, userId)
   return redirect("/dashboard/" + transcription.id)
 }
 
-export const makeTranscriptionAction = async (recordId: string, voiceB64: string) => {
-  const voiceBuffer = Buffer.from(voiceB64, "base64")
-  const voiceBlob = new Blob([voiceBuffer], { type: "audio/webm" })
-  return await transcriptionService.makeTranscription(recordId, voiceBlob)
+export const makeTranscriptionAction = async (recordId: string) => {
+  const updatedTranscription = await transcriptionService.makeTranscription(recordId)
+  return updatedTranscription.text
 }

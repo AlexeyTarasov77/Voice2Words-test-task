@@ -1,11 +1,18 @@
 
 model Transcription {
   id String @id @default(cuid())
-  filename String
-  voice Bytes
+  name String
   text String?
+  voiceFile VoiceFile?
   userId String
   createdAt              DateTime            @default(now())
   updatedAt              DateTime            @updatedAt
-  @@unique(userId, filename)
+}
+
+model VoiceFile {
+  id String @id @default(cuid())
+  url String
+  mimeType String
+  transcriptionId String @unique
+  transcription Transcription @relation(fields: [transcriptionId], references: [id])
 }

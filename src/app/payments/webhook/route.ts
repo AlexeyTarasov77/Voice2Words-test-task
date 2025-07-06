@@ -15,7 +15,6 @@ export async function POST(request: Request): Promise<Response> {
       status: 400,
     })
   }
-  console.log("EVENT", event.data.object)
   let intent = null;
   switch (event['type']) {
     case 'payment_intent.succeeded':

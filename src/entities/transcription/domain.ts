@@ -2,9 +2,15 @@
 export type TranscriptionEntity = {
   id: string;
   userId: string;
-  filename: string;
+  name: string;
   text: string | null
-  voice: Blob;
+  voiceFile: VoiceFileEntity
   createdAt: Date
   updatedAt: Date
+}
+
+export type VoiceFileEntity = {
+  id: string;
+  url: string;
+  mimeType: string;
 }

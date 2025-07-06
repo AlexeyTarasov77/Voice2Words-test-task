@@ -21,7 +21,16 @@ export function NewRecordModal() {
     }
     setVoiceFile(f)
   }
-  const [_, dispatch, isPending] = useActionState(async () => createVoiceRecordAction(await voiceFile!.arrayBuffer(), voiceFile!.name), null)
+  const [_, dispatch, isPending] = useActionState(async () => createVoiceRecordAction(await voiceFile!.arrayBuffer(), voiceFile!.name, voiceFile!.type), null)
+  const handleSubmit = () => {
+    if (!voiceFile) {
+      return toast.error("Select voice file to create record!")
+    }
+    if (!voiceFile.type) {
+      return toast.error("Unable to determine file type. Please try to use another file")
+    }
+    startTransition(dispatch)
+  }
   return (
     <>
       <DialogContent>
@@ -39,7 +48,7 @@ export function NewRecordModal() {
           <div className="flex flex-col gap-3">
             <h3 className="text-xl font-bold">Record New</h3>
             <AudioRecorder
-              onRecordingComplete={(blob) => setVoiceFile(new File([blob], "Record " + new Date().toLocaleString()))}
+              onRecordingComplete={(file) => setVoiceFile(file)}
               showVisualizer={true}
               audioTrackConstraints={{
                 noiseSuppression: true,
@@ -58,7 +67,7 @@ export function NewRecordModal() {
           </div>
         )}
         <DialogFooter>
-          <Button isLoading={isPending} onClick={() => voiceFile ? startTransition(dispatch) : toast.error("Select voice file to create record!")}>Create record</Button>
+          <Button isLoading={isPending} onClick={handleSubmit}>Create record</Button>
         </DialogFooter>
       </DialogContent>
     </>

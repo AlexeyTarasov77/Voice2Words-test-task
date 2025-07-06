@@ -13,8 +13,8 @@ import { LoadingSpinner } from "@/shared/ui/loader";
 export function Transcription({ transcriptionId }: { transcriptionId: string }) {
   // const transcription = await transcriptionService.getTranscription(transcriptionId)
   // if (!transcription) return notFound()
-  const { data: transcription, error, isLoading } = useSWR<TranscriptionEntity & { voice: string }>(`/api/transcriptions/${transcriptionId}`, fetcher)
-  const [transcriptionText, dispatchTranscription, isTranscriptionPending] = useActionState(() => transcription && makeTranscriptionAction(transcription.id, transcription.voice), "")
+  const { data: transcription, error, isLoading } = useSWR<TranscriptionEntity>(`/api/transcriptions/${transcriptionId}`, fetcher)
+  const [transcriptionText, dispatchTranscription, isTranscriptionPending] = useActionState(() => transcription && makeTranscriptionAction(transcription.id), "")
   useEffect(() => {
     if (!transcription) return
     if (!transcription.text && !isTranscriptionPending) startTransition(dispatchTranscription)
@@ -26,12 +26,12 @@ export function Transcription({ transcriptionId }: { transcriptionId: string }) 
   if (isLoading) return <LoadingSpinner />
   return (
     <div className="flex flex-col gap-3">
-      <h1 className="font-bold text-2xl mb-2">{transcription!.filename}</h1>
+      <h1 className="font-bold text-2xl mb-2">{transcription!.name}</h1>
       {isTranscriptionPending ?
         Array(4).map(_ => <Skeleton className="h-4 w-full" />) :
-        <p className="text-secondary-foreground">{transcriptionText || transcription?.text}</p>
+        <p className="text-secondary-foreground">{transcriptionText || transcription!.text}</p>
       }
-      <audio className="w-full" controls src={`data:audio/mp3;base64,${transcription!.voice}`} />
+      <audio className="w-full" controls src={transcription!.voiceFile.url} />
     </div>
   )
 }
