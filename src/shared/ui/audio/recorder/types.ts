@@ -14,7 +14,7 @@ export interface RecorderProps {
    * This gets called when the save button is clicked.
    * In case the recording is cancelled, the blob is discarded.
    **/
-  onRecordingComplete?: (blob: Blob) => void;
+  onRecordingComplete?: (file: File) => void;
   /**
    * This gets called when the getUserMedia Promise is rejected.
    * It takes the resultant DOMException as its parameter.

@@ -39,13 +39,9 @@ export const AudioRecorder: React.FC<RecorderProps> = ({
       recordingBlob != null &&
       onRecordingComplete != null
     ) {
-      onRecordingComplete(recordingBlob);
+      onRecordingComplete(new File([recordingBlob], "Record-" + String(new Date().getTime()), { type: mediaRecorder?.mimeType }));
     }
   }, [recordingBlob]);
-  const handleSave = () => {
-    stopRecording()
-    onRecordingComplete && recordingBlob && onRecordingComplete(recordingBlob)
-  }
   return (
     <div
       className={cn(
@@ -56,7 +52,7 @@ export const AudioRecorder: React.FC<RecorderProps> = ({
     >
       <span
         className="cursor-pointer rounded-full"
-        onClick={isRecording ? handleSave : startRecording}
+        onClick={isRecording ? stopRecording : startRecording}
       >
         {isRecording ? <Save /> : <Mic />}
       </span>
