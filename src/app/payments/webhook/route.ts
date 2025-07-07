@@ -1,3 +1,4 @@
+import { SubscriptionLevelEntity } from "@/entities/subscription/domain";
 import { subscriptionsService } from "@/entities/subscription/service";
 import { stripe } from "@/shared/lib/stripe";
 import Stripe from "stripe";
@@ -19,10 +20,10 @@ export async function POST(request: Request): Promise<Response> {
   switch (event['type']) {
     case 'payment_intent.succeeded':
       intent = event.data.object;
-      const subscriptionId = intent.metadata.subscriptionId
+      const subscriptionLevel = Number(intent.metadata.level) as SubscriptionLevelEntity
       const userId = intent.metadata.userId
-      if (!subscriptionId || !userId) throw new Error("invalid metadata: " + intent.metadata)
-      await subscriptionsService.upgradeSubscriptionConfirm(subscriptionId, userId)
+      if (!subscriptionLevel || !userId) throw new Error("invalid metadata: " + intent.metadata)
+      await subscriptionsService.upgradeSubscriptionConfirm(subscriptionLevel, userId)
       break;
     case 'payment_intent.payment_failed':
       intent = event.data.object;

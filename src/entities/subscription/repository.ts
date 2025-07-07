@@ -1,4 +1,4 @@
-import { Prisma, Subscription, SubscriptionLevel } from "@/generated/prisma";
+import { Prisma, Subscription } from "@/generated/prisma";
 import { SubscriptionEntity, SubscriptionLevelEntity } from "./domain";
 import { prisma } from "@/shared/lib/db";
 

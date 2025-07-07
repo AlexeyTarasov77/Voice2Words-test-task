@@ -6,7 +6,6 @@ export enum SubscriptionLevelEntity {
 }
 
 export type SubscriptionEntity = {
-  id: string;
   level: SubscriptionLevelEntity;
   maxRecords: number;
   price: number;

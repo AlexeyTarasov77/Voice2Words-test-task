@@ -1,7 +1,7 @@
 import { auth, clerkClient } from "@clerk/nextjs/server"
 import { subscriptionsRepo } from "./repository"
 import { stripe } from "@/shared/lib/stripe"
-import { getSubscriptionName, SubscriptionLevelEntity } from "./domain"
+import { getSubscriptionName, SubscriptionEntity, SubscriptionLevelEntity } from "./domain"
 import { notFound } from "next/navigation"
 
 export const subscriptionsService = {
@@ -10,14 +10,14 @@ export const subscriptionsService = {
   },
   getCurrentSub: async () => {
     const { sessionClaims } = await auth()
-    const subId = sessionClaims?.subscriptionId
-    if (!subId) {
-      return await subscriptionsRepo.getSubscription({ level: SubscriptionLevelEntity.FREE })
-    }
-    return await subscriptionsRepo.getSubscription({ id: subId })
+    let currentLevel = sessionClaims?.subscriptionLevel || SubscriptionLevelEntity.FREE
+    let subscription: SubscriptionEntity | null
+    subscription = await subscriptionsRepo.getSubscription({ level: currentLevel })
+    if (!subscription) throw new Error("Unable to find current or default subscription!")
+    return subscription
   },
-  upgradeSubscriptionInitPayment: async (subscriptionId: string, userId: string, origin: string) => {
-    const subscription = await subscriptionsRepo.getSubscription({ id: subscriptionId })
+  upgradeSubscriptionInitPayment: async (level: SubscriptionLevelEntity, userId: string, origin: string) => {
+    const subscription = await subscriptionsRepo.getSubscription({ level })
     if (!subscription) return notFound()
     const session = await stripe.checkout.sessions.create({
       line_items: [
@@ -35,15 +35,13 @@ export const subscriptionsService = {
       mode: 'payment',
       success_url: `${origin}/payments/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/pricing?canceled=true`,
-      payment_intent_data: { metadata: { subscriptionId, userId } },
+      payment_intent_data: { metadata: { level, userId } },
     });
     return session.url!
   },
-  upgradeSubscriptionConfirm: async (subscriptionId: string, userId: string) => {
+  upgradeSubscriptionConfirm: async (subscriptionLevel: SubscriptionLevelEntity, userId: string) => {
     const client = await clerkClient()
-    await client.users.updateUserMetadata(userId, { publicMetadata: { subscriptionId } })
+    console.log("UPDATING METADATA", { subscriptionLevel })
+    await client.users.updateUserMetadata(userId, { publicMetadata: { subscriptionLevel } })
   },
-  getDefaultSubscription: async () => {
-    return await subscriptionsRepo.getSubscription({ level: SubscriptionLevelEntity.FREE })
-  }
 }

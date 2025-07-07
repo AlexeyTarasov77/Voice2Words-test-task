@@ -4,9 +4,8 @@ enum SubscriptionLevel {
 }
 
 model Subscription {
-  id String @id @default(cuid())
+  level SubscriptionLevel @id
   maxRecords Int
-  level SubscriptionLevel @unique
   price Float
   features String[]
 }

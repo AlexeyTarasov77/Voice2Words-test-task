@@ -15,7 +15,7 @@ export function SubscriptionCard({ subscription, currentLevel }: { currentLevel?
       return <Button disabled={true}>Default</Button>
     }
     if (!currentLevel || subscription.level > currentLevel) {
-      return <UpgradeBtn subscriptionId={subscription.id} />
+      return <UpgradeBtn subscriptionLevel={subscription.level} />
     }
     if (subscription.level < currentLevel) {
       return <Button disabled={true}>Downgrade</Button>

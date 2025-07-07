@@ -15,7 +15,7 @@ export function SubscriptionsList() {
     <div className="grid grid-cols-2 gap-10">
       {subscriptions.map(sub => (
         <SubscriptionCard
-          key={sub.id}
+          key={sub.level}
           subscription={sub}
           currentLevel={currentSubscription?.level}
         />

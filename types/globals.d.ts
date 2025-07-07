@@ -1,7 +1,9 @@
+import { SubscriptionLevelEntity } from "@/entities/subscription/domain"
+
 export { }
 
 declare global {
   interface CustomJwtSessionClaims {
-    subscriptionId: string
+    subscriptionLevel: SubscriptionLevelEntity
   }
 }
