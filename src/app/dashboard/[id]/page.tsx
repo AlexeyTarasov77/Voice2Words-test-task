@@ -1,4 +1,4 @@
-import { Transcription } from "@/features/dashboard/ui/transcription";
+import { Transcription } from "@/features/dashboard";
 
 export default async function TranscriptionPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params

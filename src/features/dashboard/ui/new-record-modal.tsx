@@ -9,9 +9,10 @@ import {
 } from "@/shared/ui/dialog"
 import { FileDropbox } from "@/shared/ui/dropbox";
 import { Trash } from "lucide-react";
-import { startTransition, useActionState, useState } from "react";
+import { startTransition, useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { createVoiceRecordAction } from "../api/transcriptions";
+import { TranscriptionErrorCodes } from "@/entities/transcription/errors";
 
 export function NewRecordModal() {
   const [voiceFile, setVoiceFile] = useState<File | null>(null)
@@ -21,7 +22,21 @@ export function NewRecordModal() {
     }
     setVoiceFile(f)
   }
-  const [_, dispatch, isPending] = useActionState(async () => createVoiceRecordAction(await voiceFile!.arrayBuffer(), voiceFile!.name, voiceFile!.type), null)
+  const [errorCode, dispatch, isPending] = useActionState(async () => createVoiceRecordAction(await voiceFile!.arrayBuffer(), voiceFile!.name, voiceFile!.type), null)
+  useEffect(() => {
+    if (errorCode !== null) {
+      switch (errorCode) {
+        case TranscriptionErrorCodes.INVALID_VOICE_FILE:
+          toast.error("Selected file is not supported. Please try select another one")
+          break;
+        case TranscriptionErrorCodes.LIMIT_EXCEEDED:
+          toast.error(`You've reached limit of transcriptions in your current subscription.`)
+          break;
+        default:
+          toast.error("Unexpected error! Please, try again later")
+      }
+    }
+  }, [errorCode])
   const handleSubmit = () => {
     if (!voiceFile) {
       return toast.error("Select voice file to create record!")

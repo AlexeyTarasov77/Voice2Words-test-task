@@ -1,6 +1,7 @@
 "use server"
 
 import { transcriptionService } from "@/entities/transcription/service"
+import { matchResult } from "@/shared/utils/error-handling"
 import { auth } from "@clerk/nextjs/server"
 import { headers } from "next/headers"
 import { redirect } from "next/navigation"
@@ -11,11 +12,13 @@ export const createVoiceRecordAction = async (voiceFileData: BlobPart, voiceFile
   const headersList = await headers()
   const origin = headersList.get('origin')
   if (!origin) throw new Error("Invalid request without origin header")
-  const transcription = await transcriptionService.createVoiceRecord(voiceFile, origin, userId)
-  return redirect("/dashboard/" + transcription.id)
+  const res = await transcriptionService.createVoiceRecord(voiceFile, origin, userId)
+  return matchResult(res, {
+    onSuccess: (v) => redirect("/dashboard/" + v.id),
+    onFailure: (code) => code
+  })
 }
 
 export const makeTranscriptionAction = async (recordId: string) => {
-  const updatedTranscription = await transcriptionService.makeTranscription(recordId)
-  return updatedTranscription.text
+  return await transcriptionService.makeTranscription(recordId)
 }

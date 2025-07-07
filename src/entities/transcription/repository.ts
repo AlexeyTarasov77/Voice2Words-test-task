@@ -14,6 +14,9 @@ export const transcriptionsRepo = {
     const records = await prisma.transcription.findMany({ where, include: transcriptionInclude })
     return records.map(mapToEntity)
   },
+  getTranscriptionsCount: async (where: Prisma.TranscriptionWhereInput): Promise<number> => {
+    return await prisma.transcription.count({ where })
+  },
   save: async (data: TranscriptionEntity) => {
     await prisma.transcription.create({ data: { ...data, voiceFile: { create: data.voiceFile } } })
   },

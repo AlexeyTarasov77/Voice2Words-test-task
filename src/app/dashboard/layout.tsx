@@ -1,4 +1,4 @@
-import { TranscriptionsSidebar } from "@/features/dashboard/ui/list";
+import { TranscriptionsSidebar } from "@/features/dashboard";
 import { PropsWithChildren } from "react";
 import { SidebarContainer } from "./sidebar-container";
 
