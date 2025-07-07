@@ -11,7 +11,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSkeleton,
   SidebarRail,
 } from "@/shared/ui/sidebar"
 import { Search } from "lucide-react"
@@ -19,17 +18,20 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { fetcher } from '@/shared/lib/api'
 import { TranscriptionEntity } from '@/entities/transcription/domain'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useFilteredData } from '@/shared/lib/react/search'
 import { Button } from '@/shared/ui/button'
 import { Dialog, DialogTrigger } from '@/shared/ui/dialog'
 import { NewRecordModal } from './new-record-modal'
+import { Skeleton } from '@/shared/ui/skeleton'
+import { toast } from 'sonner'
 
 export function TranscriptionsSidebar() {
   const { data: transcriptions, error, isLoading } = useSWR<TranscriptionEntity[]>(`/api/transcriptions`, fetcher)
   const [searchQuery, setSearchQuery] = useState("")
   const filteredTranscriptions = useFilteredData(searchQuery, (t) => t.name, transcriptions || [])
   const currentPath = usePathname()
+  useEffect(() => { error && toast.error(error) }, [error])
   return (
     <Sidebar>
       <SidebarHeader>
@@ -52,14 +54,18 @@ export function TranscriptionsSidebar() {
       </SidebarHeader>
       <SidebarContent>
         <SidebarMenu>
-          {(isLoading ? Array(10) : filteredTranscriptions).map((t: TranscriptionEntity | undefined) => (
+          {(isLoading ? Array.from({ length: 10 }) as undefined[] : filteredTranscriptions).map((t, i) => (
             t ?
               <SidebarMenuItem key={t.id}>
                 <SidebarMenuButton isActive={currentPath == `/dashboard/${t.id}`}>
                   <Link className="truncate text-ellipsis" href={`/dashboard/${t.id}`}>{t.name}</Link>
                 </SidebarMenuButton>
               </SidebarMenuItem> :
-              <SidebarMenuSkeleton />
+              <SidebarMenuItem key={i}>
+                <SidebarMenuButton>
+                  <Skeleton className="h-full w-full" />
+                </SidebarMenuButton>
+              </SidebarMenuItem>
           ))}
         </SidebarMenu>
       </SidebarContent>
