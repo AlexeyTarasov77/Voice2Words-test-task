@@ -14,10 +14,9 @@ export const subscriptionsService = {
     return sessionClaims.subscriptionLevel || SubscriptionLevelEntity.FREE
   },
   getCurrentSub: async () => {
-    let subscription: SubscriptionEntity | null
     const currentLevel = await subscriptionsService.getCurrentSubscriptionLevel()
     if (!currentLevel) throw new Error("Unauthenticated")
-    subscription = await subscriptionsRepo.getSubscription({ level: currentLevel })
+    const subscription = await subscriptionsRepo.getSubscription({ level: currentLevel })
     if (!subscription) throw new Error("Unable to find current or default subscription!")
     return subscription
   },
