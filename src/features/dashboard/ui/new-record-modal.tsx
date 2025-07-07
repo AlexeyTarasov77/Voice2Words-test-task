@@ -13,9 +13,15 @@ import { startTransition, useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { createVoiceRecordAction } from "../api/transcriptions";
 import { TranscriptionErrorCodes } from "@/entities/transcription/errors";
+import { PaymentPopup } from "./payment-popup";
+import { useAuth } from "@clerk/nextjs";
+import { getNextLevel, SubscriptionLevelEntity } from "@/entities/subscription/domain";
 
 export function NewRecordModal() {
   const [voiceFile, setVoiceFile] = useState<File | null>(null)
+  const [showPaymentPopup, setShowPaymentPopup] = useState(false)
+  const { sessionClaims } = useAuth()
+  const currentSubscriptionLevel = sessionClaims?.subscriptionLevel || SubscriptionLevelEntity.FREE
   const handleFileUpload = async (f: File) => {
     if (!f.type.startsWith("audio")) {
       return toast.error(`Please select file with valid audio format! ${f.type} is not supported`)
@@ -24,13 +30,13 @@ export function NewRecordModal() {
   }
   const [errorCode, dispatch, isPending] = useActionState(async () => createVoiceRecordAction(await voiceFile!.arrayBuffer(), voiceFile!.name, voiceFile!.type), null)
   useEffect(() => {
-    if (errorCode !== null) {
+    if (errorCode) {
       switch (errorCode) {
         case TranscriptionErrorCodes.INVALID_VOICE_FILE:
           toast.error("Selected file is not supported. Please try select another one")
           break;
         case TranscriptionErrorCodes.LIMIT_EXCEEDED:
-          toast.error(`You've reached limit of transcriptions in your current subscription.`)
+          setShowPaymentPopup(true)
           break;
         default:
           toast.error("Unexpected error! Please, try again later")
@@ -48,6 +54,7 @@ export function NewRecordModal() {
   }
   return (
     <>
+      <PaymentPopup open={showPaymentPopup} onOpenChange={setShowPaymentPopup} nextLevel={getNextLevel(currentSubscriptionLevel)} />
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Create New Transcription</DialogTitle>

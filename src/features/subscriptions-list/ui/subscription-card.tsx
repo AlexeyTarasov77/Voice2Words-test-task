@@ -6,7 +6,7 @@ import { getSubscriptionName, SubscriptionEntity, SubscriptionLevelEntity } from
 
 
 
-export function SubscriptionCard({ subscription, currentLevel }: { currentLevel?: SubscriptionLevelEntity, subscription: SubscriptionEntity }) {
+export function SubscriptionCard({ subscription, currentLevel }: { currentLevel: SubscriptionLevelEntity | null, subscription: SubscriptionEntity }) {
   const renderFooterButton = () => {
     if (currentLevel == subscription.level) {
       return <Button disabled={true}>Current plan</Button>

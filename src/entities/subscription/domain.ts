@@ -1,7 +1,7 @@
 import { capitalize } from "@/shared/utils/text";
 
 export enum SubscriptionLevelEntity {
-  FREE,
+  FREE = 1,
   PREMIUM
 }
 
@@ -11,6 +11,8 @@ export type SubscriptionEntity = {
   price: number;
   features: string[]
 };
+
+export const getNextLevel = (currLevel: SubscriptionLevelEntity): SubscriptionLevelEntity => SubscriptionLevelEntity[currLevel + 1] !== undefined ? currLevel + 1 : currLevel
 
 export const getSubscriptionName = (sub: SubscriptionEntity): string => {
   return capitalize(SubscriptionLevelEntity[sub.level])

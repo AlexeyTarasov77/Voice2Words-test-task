@@ -1,6 +1,6 @@
 import { auth, clerkClient } from "@clerk/nextjs/server"
-import { subscriptionsRepo } from "./repository"
 import { stripe } from "@/shared/lib/stripe"
+import { subscriptionsRepo } from "./repository"
 import { getSubscriptionName, SubscriptionEntity, SubscriptionLevelEntity } from "./domain"
 import { notFound } from "next/navigation"
 
@@ -8,10 +8,15 @@ export const subscriptionsService = {
   listSubscriptions: async () => {
     return await subscriptionsRepo.listSubscriptions()
   },
-  getCurrentSub: async () => {
+  getCurrentSubscriptionLevel: async () => {
     const { sessionClaims } = await auth()
-    let currentLevel = sessionClaims?.subscriptionLevel || SubscriptionLevelEntity.FREE
+    if (!sessionClaims) return null
+    return sessionClaims.subscriptionLevel || SubscriptionLevelEntity.FREE
+  },
+  getCurrentSub: async () => {
     let subscription: SubscriptionEntity | null
+    const currentLevel = await subscriptionsService.getCurrentSubscriptionLevel()
+    if (!currentLevel) throw new Error("Unauthenticated")
     subscription = await subscriptionsRepo.getSubscription({ level: currentLevel })
     if (!subscription) throw new Error("Unable to find current or default subscription!")
     return subscription
