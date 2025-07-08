@@ -1,23 +1,21 @@
 import fs from 'node:fs/promises';
 import mime from "mime-types"
 
-import { Upload } from '@aws-sdk/lib-storage'
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 
 interface MediaUploader {
   uploadVoiceFile: (origin: string, userId: string, file: File) => Promise<string>;
 }
 
-const isFilenameExtensionless = (filename: string) => filename.split(".").length < 2
-
 // getFilenameWithExt appends extension to the filename if it's not exist yet by inferring it from the mime type
 // and also adds timestamp to avoid collision
 const getFilenameWithExt = (file: File) => {
-  let filename = file.name + String(new Date().getTime())
-  if (isFilenameExtensionless(filename)) {
-    filename = filename + "." + mime.extension(file.type)
+  let [filename, ext] = file.name.split(".")
+  filename += String(new Date().getTime())
+  if (!ext) {
+    ext = String(mime.extension(file.type))
   }
-  return filename
+  return filename + "." + ext
 }
 
 export const getFileStorage = (): MediaUploader => {

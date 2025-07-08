@@ -45,7 +45,6 @@ export const subscriptionsService = {
   },
   upgradeSubscriptionConfirm: async (subscriptionLevel: SubscriptionLevelEntity, userId: string) => {
     const client = await clerkClient()
-    console.log("UPDATING METADATA", { subscriptionLevel })
     await client.users.updateUserMetadata(userId, { publicMetadata: { subscriptionLevel } })
   },
 }
