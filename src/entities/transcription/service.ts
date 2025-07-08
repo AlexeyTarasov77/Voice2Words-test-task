@@ -2,11 +2,11 @@ import { hf } from "@/shared/lib/hf"
 import { createId } from '@paralleldrive/cuid2';
 import { transcriptionsRepo } from "./repository"
 import { TranscriptionEntity } from "./domain";
-import { uploadFile } from "@/shared/utils/files";
 import { Result } from "@/shared/utils/error-handling";
 import { checkCanCreateRecord } from "../subscription/domain";
 import { subscriptionsService } from "../subscription/service";
 import { TranscriptionErrorCodes } from "./errors";
+import { getFileStorage } from "@/shared/lib/files";
 
 
 export const transcriptionService = {
@@ -22,7 +22,8 @@ export const transcriptionService = {
     if (!voiceFile.type) {
       return { type: "error", code: TranscriptionErrorCodes.INVALID_VOICE_FILE }
     }
-    const uploadedFileUrl = await uploadFile(origin, userId, voiceFile)
+    const fileStorage = getFileStorage()
+    const uploadedFileUrl = await fileStorage.uploadVoiceFile(origin, userId, voiceFile)
     const ent: TranscriptionEntity = {
       id: createId(),
       name: voiceFile.name,
