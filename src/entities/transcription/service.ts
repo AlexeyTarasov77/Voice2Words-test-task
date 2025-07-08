@@ -48,6 +48,36 @@ export const transcriptionService = {
     const voiceFileBlob = await resp.blob()
     const res = await hf.automaticSpeechRecognition({ data: voiceFileBlob, model: "openai/whisper-large-v3", provider: "hf-inference" })
     record.text = res.text
+    const titleGenerationPrompt = `
+Create a summarizing title which shortly describes provided text by following requirements below:
+1) output must contain only resulting title and nothing else.
+2) Try to stick to maximum a few words. 
+3) Output language must be the same as the input language (e.g if input is in english, output must be in english and if input is in russian output must be in russian as well)
+Below are few examples which might help you,
+where 'Input' is given text and Output is approximate title which would be suitable for the given text:
+
+Input: 1 2 3 4 5 6 7 8
+Output: Numbers enumeration
+
+Input: Ученые из Массачусетского технологического института разработали новый метод хранения энергии, который в 10 раз эффективнее традиционных аккумуляторов.
+Output: Метод хранения энергии
+
+Input: OpenAI представила новую функцию в ChatGPT, которая позволяет пользователям создавать собственные GPT-агенты без навыков программирования.
+Output: ChatGPT ИИ-агенты
+
+Here is the text to create title for: ${res.text}
+`
+    const titleGenerationRes = await hf.chatCompletion({
+      max_tokens: 50,
+      messages: [{ role: "user", content: titleGenerationPrompt }],
+      model: "meta-llama/Llama-3.1-8B-Instruct",
+      provider: "sambanova"
+    })
+    console.log(titleGenerationRes.choices[0])
+    const generatedTitle = titleGenerationRes.choices[0].message.content
+    if (generatedTitle) {
+      record.name = generatedTitle
+    }
     await transcriptionsRepo.updateTranscriptionById(recordId, record)
     return { type: "success", value: record }
   }
